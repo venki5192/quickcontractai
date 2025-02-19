@@ -51,39 +51,31 @@ const DashboardContent = () => {
   }, [session, isLoading, router]);
 
   // Fetch documents
-  useEffect(() => {
-    async function fetchDocuments() {
-      const { data, error } = await supabase
-        .from('documents')
-        .select('*')
-        .order('created_at', { ascending: false });
+  const fetchDocuments = async () => {
+    const { data, error } = await supabase
+      .from('documents')
+      .select('*')
+      .order('created_at', { ascending: false });
 
-      if (data) {
-        setDocuments(data);
-      }
+    if (data) {
+      setDocuments(data);
     }
-
-    fetchDocuments();
-  }, [supabase]);
+  };
 
   // Add this effect to fetch credits
-  useEffect(() => {
-    async function fetchCredits() {
-      if (session?.user) {
-        const { data, error } = await supabase
-          .from('users')
-          .select('credits')
-          .eq('id', session.user.id)
-          .single();
-        
-        if (data) {
-          setCredits(data.credits);
-        }
+  const fetchCredits = async () => {
+    if (session?.user) {
+      const { data, error } = await supabase
+        .from('users')
+        .select('credits')
+        .eq('id', session.user.id)
+        .single();
+      
+      if (data) {
+        setCredits(data.credits);
       }
     }
-
-    fetchCredits();
-  }, [session, supabase]);
+  };
 
   // Add this to listen for credits updates
   useEffect(() => {
@@ -111,13 +103,18 @@ const DashboardContent = () => {
   // Handle successful payment
   useEffect(() => {
     if (sessionId) {
-      // Clear the URL parameter
-      router.replace('/dashboard');
-      
-      // Refresh the page to update subscription status
-      window.location.reload();
+      try {
+        // Clear the URL parameter without triggering a reload
+        window.history.replaceState({}, '', '/dashboard');
+        
+        // Refresh necessary data
+        fetchDocuments();
+        fetchCredits();
+      } catch (error) {
+        console.error('Error handling successful payment:', error);
+      }
     }
-  }, [sessionId, router]);
+  }, [sessionId, fetchDocuments, fetchCredits]);
 
   if (isLoading) {
     return null;
