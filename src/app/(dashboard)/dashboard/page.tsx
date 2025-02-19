@@ -65,6 +65,7 @@ const DashboardContent = () => {
   // Add this effect to fetch credits
   const fetchCredits = async () => {
     if (session?.user) {
+      console.log('Fetching credits for user:', session.user.id); // Debug log
       const { data, error } = await supabase
         .from('users')
         .select('credits')
@@ -72,7 +73,11 @@ const DashboardContent = () => {
         .single();
       
       if (data) {
+        console.log('Credits data:', data); // Debug log
         setCredits(data.credits);
+      }
+      if (error) {
+        console.error('Error fetching credits:', error); // Debug log
       }
     }
   };
@@ -115,6 +120,12 @@ const DashboardContent = () => {
       }
     }
   }, [sessionId, fetchDocuments, fetchCredits]);
+
+  // Add this useEffect after your function definitions
+  useEffect(() => {
+    fetchDocuments();
+    fetchCredits();
+  }, [supabase, session]);  // Add session to dependency array
 
   if (isLoading) {
     return null;
