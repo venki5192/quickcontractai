@@ -48,19 +48,21 @@ const Hero = () => {
         </div>
 
         {/* Larger Dashboard Preview */}
-        <div className="relative w-[85%] md:w-[80%] mt-16">
-          <div className="relative w-full aspect-[16/9] rounded-lg overflow-hidden bg-[#0F1117] border border-[#1D2839]">
-            <div className="absolute inset-0 bg-[#0F1117]" />
+        <div className="relative w-[95%] md:w-[90%] mt-16">
+          <div className="relative w-full aspect-[16/11] rounded-lg overflow-hidden bg-[#0F1117] border border-[#1D2839]">
+            <div className="absolute inset-0">
+              <Image
+                src="/dashboard-preview.jpg"
+                alt="Contract Analysis Dashboard Preview"
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 768px) 95vw, 90vw"
+                quality={100}
+                priority
+              />
+            </div>
             
-            <div 
-              className="absolute inset-0" 
-              style={{
-                backgroundImage: `radial-gradient(#1D2839 1px, transparent 1px)`,
-                backgroundSize: '24px 24px'
-              }}
-            />
-
-            {/* Gradient overlays */}
+            {/* Gradient overlays for better text contrast */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-l from-black/20 via-transparent to-transparent" />
           </div>
