@@ -16,8 +16,14 @@ SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"       # From Project Settings 
 # Stripe Configuration
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_..."        # From Stripe Dashboard → API Keys
 STRIPE_SECRET_KEY="sk_test_..."                         # From Stripe Dashboard → API Keys
-STRIPE_WEBHOOK_SECRET="whsec_..."                       # From Stripe → Webhooks
-NEXT_PUBLIC_STRIPE_FREE_PRICE_ID="price_..."           # Your Free Plan Price ID
+STRIPE_WEBHOOK_SECRET="whsec_..."                       # From Stripe → Webhooks (Select These events to monitor customer.subscription.created
+customer.subscription.deleted
+customer.subscription.updated
+price.created
+price.updated
+product.created
+product.updated)
+
 NEXT_PUBLIC_STRIPE_PRO_PRICE_ID="price_..."            # Your Pro Plan Price ID
 
 # OpenRouter Configuration
@@ -42,7 +48,7 @@ Then use these commands for backup/restore:
 
 
 # Restore to new database
-psql "$TARGET_DATABASE_URL" < backup.sql
+psql "$TARGET_DATABASE_URL" < supabase_backup.sql
 ```
 
 ### Getting Database URLs
